@@ -1,0 +1,62 @@
+[
+  {
+    "id": "train_1",
+    "name": "Shatabdi Express 12001",
+    "origin": "Delhi",
+    "destination": "Agra",
+    "departure": "06:00",
+    "arrival": "08:00",
+    "duration_mins": 120,
+    "price": 650,
+    "seats_available": 40,
+    "rating": 4.5
+  },
+  {
+    "id": "train_2",
+    "name": "Gatimaan Express 12049",
+    "origin": "Delhi",
+    "destination": "Agra",
+    "departure": "08:10",
+    "arrival": "09:50",
+    "duration_mins": 100,
+    "price": 800,
+    "seats_available": 30,
+    "rating": 4.7
+  },
+  {
+    "id": "train_3",
+    "name": "Chennai Express 12621",
+    "origin": "Mumbai",
+    "destination": "Chennai",
+    "departure": "19:00",
+    "arrival": "14:00",
+    "duration_mins": 1140,
+    "price": 1200,
+    "seats_available": 100,
+    "rating": 4.2
+  },
+  {
+    "id": "train_4",
+    "name": "Duronto Express 12267",
+    "origin": "Mumbai",
+    "destination": "Delhi",
+    "departure": "20:00",
+    "arrival": "08:00",
+    "duration_mins": 720,
+    "price": 1500,
+    "seats_available": 90,
+    "rating": 4.4
+  },
+  {
+    "id": "train_5",
+    "name": "Intercity Express 12345",
+    "origin": "Bengaluru",
+    "destination": "Mysuru",
+    "departure": "07:30",
+    "arrival": "10:00",
+    "duration_mins": 150,
+    "price": 200,
+    "seats_available": 80,
+    "rating": 4.0
+  }
+]

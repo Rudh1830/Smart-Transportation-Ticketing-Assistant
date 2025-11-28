@@ -1,0 +1,62 @@
+[
+  {
+    "id": "bus_1",
+    "name": "VRL Sleeper",
+    "origin": "Bengaluru",
+    "destination": "Mumbai",
+    "departure": "21:00",
+    "arrival": "08:00",
+    "duration_mins": 660,
+    "price": 1500,
+    "seats_available": 10,
+    "rating": 4.2
+  },
+  {
+    "id": "bus_2",
+    "name": "KSRTC Airavat",
+    "origin": "Bengaluru",
+    "destination": "Mysuru",
+    "departure": "09:00",
+    "arrival": "12:00",
+    "duration_mins": 180,
+    "price": 350,
+    "seats_available": 25,
+    "rating": 4.4
+  },
+  {
+    "id": "bus_3",
+    "name": "Orange Travels",
+    "origin": "Hyderabad",
+    "destination": "Chennai",
+    "departure": "20:30",
+    "arrival": "08:30",
+    "duration_mins": 720,
+    "price": 1100,
+    "seats_available": 12,
+    "rating": 4.1
+  },
+  {
+    "id": "bus_4",
+    "name": "SRS Travels",
+    "origin": "Mumbai",
+    "destination": "Goa",
+    "departure": "22:00",
+    "arrival": "07:00",
+    "duration_mins": 540,
+    "price": 900,
+    "seats_available": 20,
+    "rating": 3.8
+  },
+  {
+    "id": "bus_5",
+    "name": "Raj Express",
+    "origin": "Delhi",
+    "destination": "Jaipur",
+    "departure": "07:00",
+    "arrival": "12:00",
+    "duration_mins": 300,
+    "price": 600,
+    "seats_available": 30,
+    "rating": 4.0
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "flight_1",
+    "name": "IndiGo 6E-123",
+    "origin": "Delhi",
+    "destination": "Mumbai",
+    "departure": "09:00",
+    "arrival": "11:00",
+    "duration_mins": 120,
+    "price": 4500,
+    "seats_available": 20,
+    "rating": 4.1
+  },
+  {
+    "id": "flight_2",
+    "name": "Air India AI-301",
+    "origin": "Delhi",
+    "destination": "Mumbai",
+    "departure": "14:00",
+    "arrival": "16:15",
+    "duration_mins": 135,
+    "price": 5200,
+    "seats_available": 15,
+    "rating": 4.3
+  },
+  {
+    "id": "flight_3",
+    "name": "Vistara UK-811",
+    "origin": "Bengaluru",
+    "destination": "Delhi",
+    "departure": "06:00",
+    "arrival": "08:40",
+    "duration_mins": 160,
+    "price": 6000,
+    "seats_available": 25,
+    "rating": 4.6
+  },
+  {
+    "id": "flight_4",
+    "name": "SpiceJet SG-432",
+    "origin": "Chennai",
+    "destination": "Hyderabad",
+    "departure": "18:30",
+    "arrival": "19:45",
+    "duration_mins": 75,
+    "price": 3500,
+    "seats_available": 35,
+    "rating": 3.9
+  },
+  {
+    "id": "flight_5",
+    "name": "GoFirst G8-999",
+    "origin": "Mumbai",
+    "destination": "Goa",
+    "departure": "07:45",
+    "arrival": "09:00",
+    "duration_mins": 75,
+    "price": 2800,
+    "seats_available": 18,
+    "rating": 4.0
+  }
+]

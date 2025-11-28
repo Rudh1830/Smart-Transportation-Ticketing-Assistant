@@ -1,0 +1,62 @@
+[
+  {
+    "id": "taxi_1",
+    "name": "UberGo",
+    "origin": "Delhi",
+    "destination": "Noida",
+    "departure": "ASAP",
+    "arrival": "30 mins",
+    "duration_mins": 30,
+    "price": 300,
+    "seats_available": 4,
+    "rating": 4.5
+  },
+  {
+    "id": "taxi_2",
+    "name": "Ola Mini",
+    "origin": "Delhi",
+    "destination": "Gurugram",
+    "departure": "ASAP",
+    "arrival": "45 mins",
+    "duration_mins": 45,
+    "price": 450,
+    "seats_available": 4,
+    "rating": 4.2
+  },
+  {
+    "id": "taxi_3",
+    "name": "Uber Premier",
+    "origin": "Mumbai",
+    "destination": "Airport",
+    "departure": "ASAP",
+    "arrival": "35 mins",
+    "duration_mins": 35,
+    "price": 700,
+    "seats_available": 4,
+    "rating": 4.7
+  },
+  {
+    "id": "taxi_4",
+    "name": "Ola Prime",
+    "origin": "Bengaluru",
+    "destination": "Whitefield",
+    "departure": "ASAP",
+    "arrival": "50 mins",
+    "duration_mins": 50,
+    "price": 550,
+    "seats_available": 4,
+    "rating": 4.3
+  },
+  {
+    "id": "taxi_5",
+    "name": "Local Cab",
+    "origin": "Chennai",
+    "destination": "T Nagar",
+    "departure": "ASAP",
+    "arrival": "25 mins",
+    "duration_mins": 25,
+    "price": 250,
+    "seats_available": 4,
+    "rating": 4.0
+  }
+]

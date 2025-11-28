@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Admin - Smart Transport</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Admin Dashboard</h1>
+
+    <div class="card">
+      <h2>Add New Route</h2>
+      <div class="row">
+        <input id="ar_id" placeholder="ID (unique)" />
+        <input id="ar_name" placeholder="Name" />
+        <input id="ar_origin" placeholder="Origin" />
+        <input id="ar_destination" placeholder="Destination" />
+        <input id="ar_departure" placeholder="Departure" />
+        <input id="ar_arrival" placeholder="Arrival" />
+        <input id="ar_duration" placeholder="Duration (mins)" />
+        <input id="ar_price" placeholder="Price" />
+        <input id="ar_seats" placeholder="Seats" />
+        <select id="ar_mode">
+          <option value="train">Train</option>
+          <option value="flight">Flight</option>
+          <option value="bus">Bus</option>
+          <option value="taxi">Taxi</option>
+          <option value="bike">Bike</option>
+        </select>
+        <button onclick="addRoute()">Add Route</button>
+      </div>
+      <pre id="addRouteResult" class="output"></pre>
+    </div>
+
+    <div class="card">
+      <h2>User Search History (recent)</h2>
+      <button onclick="loadHistory()">Refresh History</button>
+      <pre id="historyResult" class="output"></pre>
+    </div>
+
+    <div class="card">
+      <h2>Transport Analytics</h2>
+      <button onclick="loadAnalytics()">Refresh Analytics</button>
+      <canvas id="modeChart" width="400" height="200"></canvas>
+    </div>
+
+    <a href="/">← Back to Home</a>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

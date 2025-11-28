@@ -1,0 +1,62 @@
+[
+  {
+    "id": "bike_1",
+    "name": "Rapido Bike",
+    "origin": "Delhi",
+    "destination": "Noida",
+    "departure": "ASAP",
+    "arrival": "25 mins",
+    "duration_mins": 25,
+    "price": 120,
+    "seats_available": 1,
+    "rating": 4.6
+  },
+  {
+    "id": "bike_2",
+    "name": "Uber Moto",
+    "origin": "Delhi",
+    "destination": "Gurugram",
+    "departure": "ASAP",
+    "arrival": "35 mins",
+    "duration_mins": 35,
+    "price": 180,
+    "seats_available": 1,
+    "rating": 4.4
+  },
+  {
+    "id": "bike_3",
+    "name": "Rapido Bike",
+    "origin": "Bengaluru",
+    "destination": "Electronic City",
+    "departure": "ASAP",
+    "arrival": "30 mins",
+    "duration_mins": 30,
+    "price": 140,
+    "seats_available": 1,
+    "rating": 4.5
+  },
+  {
+    "id": "bike_4",
+    "name": "Ola Bike",
+    "origin": "Hyderabad",
+    "destination": "Madhapur",
+    "departure": "ASAP",
+    "arrival": "20 mins",
+    "duration_mins": 20,
+    "price": 100,
+    "seats_available": 1,
+    "rating": 4.3
+  },
+  {
+    "id": "bike_5",
+    "name": "Uber Moto",
+    "origin": "Chennai",
+    "destination": "Guindy",
+    "departure": "ASAP",
+    "arrival": "25 mins",
+    "duration_mins": 25,
+    "price": 110,
+    "seats_available": 1,
+    "rating": 4.2
+  }
+]
