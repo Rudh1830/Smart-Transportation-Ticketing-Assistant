@@ -626,3 +626,20 @@ footer {
 .close-btn:hover {
   background: #1d4ed8;
 }
+
+.best-choice {
+  border: 2px solid #22c55e;
+  background: #ecfdf3;
+  position: relative;
+}
+
+.best-label {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: #16a34a;
+  color: #fff;
+  padding: 2px 8px;
+  font-size: 11px;
+  border-radius: 999px;
+}

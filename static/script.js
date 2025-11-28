@@ -15,8 +15,6 @@ function formatMode(mode) {
   return mode.charAt(0).toUpperCase() + mode.slice(1);
 }
 
-// ---------------- USER SEARCH ----------------
-
 async function doSearch() {
   const origin = document.getElementById("origin").value;
   const destination = document.getElementById("destination").value;
@@ -44,15 +42,40 @@ async function doSearch() {
       return;
     }
 
+    const results = data.results || [];
     resultBox.innerHTML = "";
-    data.results.forEach(item => {
+
+    // 1) Pick BEST choice (simple rule: lowest price; you can later plug in agent logic)
+    let best = results[0];
+    for (const item of results) {
+      if (Number(item.price) < Number(best.price)) {
+        best = item;
+      }
+    }
+
+    // 2) Render BEST choice first
+    const bestDiv = document.createElement("div");
+    bestDiv.className = "result-card best-choice";
+    bestDiv.innerHTML = `
+      <div class="best-label">⭐ Best Choice</div>
+      <h3>${best.name} (${best.mode.toUpperCase()})</h3>
+      <p>${best.origin} → ${best.destination}</p>
+      <p><b>Price:</b> ₹${best.price} &nbsp; | &nbsp; <b>Seats:</b> ${best.seats_available}</p>
+      <button onclick="fakeBook('${best.name}', '${best.id}', ${best.price})">Book</button>
+    `;
+    resultBox.appendChild(bestDiv);
+
+    // 3) Render remaining options below (excluding best to avoid duplicate)
+    results.forEach(item => {
+      if (item.id === best.id) return; // skip best, already shown
+
       const div = document.createElement("div");
       div.className = "result-card";
       div.innerHTML = `
         <h3>${item.name} (${item.mode.toUpperCase()})</h3>
         <p>${item.origin} → ${item.destination}</p>
         <p><b>Price:</b> ₹${item.price} &nbsp; | &nbsp; <b>Seats:</b> ${item.seats_available}</p>
-        <button onclick="fakeBook('${item.id}', '${item.name}', ${item.price})">Book</button>
+        <button onclick="fakeBook('${item.name}', '${item.id}', ${item.price})">Book</button>
       `;
       resultBox.appendChild(div);
     });
@@ -62,7 +85,6 @@ async function doSearch() {
     resultBox.innerHTML = "<p>❗ Something went wrong while searching.</p>";
   }
 }
-
 // ---------------- WEBSITE COMPARISON ----------------
 
 async function compareWebsites(){
