@@ -1,114 +1,131 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8" />
   <title>Smart Transportation Ticketing Assistant</title>
   <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
   <div class="layout">
 
-    <!-- LEFT SIDE (FULL HEIGHT, TWO SECTIONS) -->
+    <!-- LEFT SIDE -->
     <div class="left-column">
 
-      <!-- Search Section -->
-      <div class="card full-section">
+      <!-- Booking history dropdown button -->
+      <div class="top-bar">
+        <button class="history-btn" onclick="toggleHistoryPanel()">
+          View Your Booking History ▾
+        </button>
+
+        <div id="historyPanel" class="history-panel hidden">
+          <h3>Booking History</h3>
+          <div id="historyList">
+            <p>No bookings yet.</p>
+          </div>
+        </div>
+      </div>
+
+      <h1>Smart Transportation Ticketing Assistant</h1>
+
+      <!-- Search card -->
+      <div class="card">
         <h2>Search Travel Options</h2>
-        
-        <!-- 🔹 UPDATED SEARCH ROW WITH DROPDOWNS -->
         <div class="row">
+          <!-- origin/destination are <select> because they are filled from JSON -->
           <select id="origin"></select>
           <select id="destination"></select>
-
           <input id="date" type="date" />
-
           <select id="mode" onchange="updateLocations()">
-            <option value="">All</option>
+            <option value="">Select Mode</option>
             <option value="train">Train</option>
             <option value="flight">Flight</option>
             <option value="bus">Bus</option>
-            <option value="taxi">Taxi</option>
+            <option value="taxi">Cab / Taxi</option>
             <option value="bike">Bike Taxi</option>
           </select>
-
           <button onclick="doSearch()">Search</button>
         </div>
-        
         <div id="searchResult" class="cards-container"></div>
-
-        <!-- 🔥 ADDED NEW SECTION HERE -->
-        <div style="margin-top:10px;">
-          <button onclick="loadBookingHistory()">View Your Booking History</button>
-        </div>
-        <div id="bookingHistory" class="cards-container"></div>
       </div>
 
-      <!-- Price Comparison Section -->
-      <div class="card full-section">
-        <h2>Compare Website Prices (Uber / Rapido / RedBus etc.)</h2>
-        <p>Enter transport mode + cities and compare fares from platforms.</p>
+      <!-- Website comparison card -->
+      <div class="card">
+        <h2>Compare Website Prices (Uber / Rapido / RedBus / etc.)</h2>
+        <p class="hint">
+          Example: select mode <b>bike</b> or <b>taxi</b>, choose origin &amp; destination, then click “Compare”.
+        </p>
         <div class="row">
           <select id="cw_origin"></select>
           <select id="cw_destination"></select>
-
-          <select id="cw_mode" onchange="updateCompareLocations()">
+          <select id="cw_mode">
             <option value="bike">Bike Taxi</option>
             <option value="taxi">Cab / Taxi</option>
             <option value="bus">Bus</option>
             <option value="train">Train</option>
             <option value="flight">Flight</option>
           </select>
-
           <button onclick="compareWebsites()">Compare</button>
         </div>
-
         <div id="compareResult"></div>
       </div>
 
     </div>
 
-    <!-- RIGHT SIDE CHATBOT -->
+    <!-- RIGHT SIDE – CHATBOT -->
     <div class="right-column card">
       <h2>AI Travel Assistant 💬</h2>
 
       <div id="chatWindow" class="chat-window"></div>
 
-      <!-- Typing animation bubble -->
+      <!-- typing indicator -->
       <div id="typingIndicator" class="typing hidden">
-        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
       </div>
 
       <div class="chat-input">
-        <input id="chatMessage" placeholder="Type your message..."
-              onkeydown="if(event.key==='Enter'){ sendMessage(); }" />
+        <input
+          id="chatMessage"
+          placeholder="Ask me: best route, cheapest flight, safety tips..."
+          onkeydown="if(event.key==='Enter') sendMessage()"
+        />
         <button onclick="sendMessage()">Send</button>
       </div>
     </div>
-
   </div>
 
   <footer>
-    <center><small>⚠️ Simulation only — no real booking or live API.</small></center>
+    <center><small>Demo — all transport and website data is simulated locally.</small></center>
   </footer>
 
-  <!-- 🔥 PAYMENT MODAL ADDED -->
-  <div id="paymentModal" class="payment-modal hidden">
-    <div class="payment-content">
-      <h3>Payment</h3>
+  <!-- Payment method modal -->
+  <div id="paymentModal" class="overlay hidden">
+    <div class="overlay-content">
+      <h3>Confirm Payment</h3>
       <p id="paymentSummary"></p>
-
-      <label for="paymentMethod">Payment method:</label>
-      <select id="paymentMethod">
-        <option value="UPI">UPI</option>
-        <option value="Card">Debit / Credit Card</option>
-        <option value="NetBanking">Net Banking</option>
-        <option value="Wallet">Wallet</option>
-      </select>
-
-      <div class="payment-actions">
-        <button onclick="confirmPayment()">Pay</button>
-        <button onclick="closePaymentModal()">Cancel</button>
+      <label>
+        Payment Method:
+        <select id="paymentMethod">
+          <option value="UPI">UPI</option>
+          <option value="Debit Card">Debit Card</option>
+          <option value="Credit Card">Credit Card</option>
+          <option value="Net Banking">Net Banking</option>
+        </select>
+      </label>
+      <div style="margin-top:10px; display:flex; gap:8px; justify-content:flex-end;">
+        <button class="close-btn" onclick="closePaymentModal()">Cancel</button>
+        <button class="close-btn" onclick="confirmPayment()">Pay</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Center overlay for processing steps -->
+  <div id="processOverlay" class="overlay hidden">
+    <div class="overlay-content">
+      <h3>Booking in progress...</h3>
+      <div id="processContent"></div>
+      <button class="close-btn" onclick="closeProcessingOverlay()">Close</button>
     </div>
   </div>
 

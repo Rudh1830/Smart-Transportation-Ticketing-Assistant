@@ -154,21 +154,20 @@ async function compareWebsites(){
   }
 }
 
-let currentBooking = null;  // add near fakeBook / top-level
+// ---------------- BOOKING / PAYMENT ----------------
+
+let currentBooking = null;  // booking context for payment + overlay
 
 function fakeBook(site, transportId, price){
-  // store context for payment
+  // used both from search results and website comparison
   currentBooking = { site, transportId, price };
-  openPaymentModal();
-}
 
-function openPaymentModal(){
   const modal = document.getElementById("paymentModal");
   const summary = document.getElementById("paymentSummary");
 
-  if (currentBooking && summary) {
+  if (summary) {
     summary.innerHTML =
-      `Booking <b>${currentBooking.transportId}</b> via <b>${currentBooking.site}</b> for <b>₹${currentBooking.price}</b>.`;
+      `Booking <b>${transportId}</b> via <b>${site}</b> for <b>₹${price}</b>.`;
   }
   if (modal) {
     modal.classList.remove("hidden");
@@ -182,16 +181,41 @@ function closePaymentModal(){
   }
 }
 
+// center overlay for processing steps (instead of chatbot)
+function showProcessingOverlay(price, name, method){
+  const overlay = document.getElementById("processOverlay");
+  const content = document.getElementById("processContent");
+  if (!overlay || !content) return;
+
+  overlay.classList.remove("hidden");
+  content.innerHTML = "";
+
+  const p = Number(price).toFixed(2);
+
+  content.innerHTML += `<p>📱 Initializing ${method} payment of ₹${p}...</p>`;
+  setTimeout(() => {
+    content.innerHTML += `<p>🔐 Securely verifying transaction with your bank...</p>`;
+  }, 700);
+  setTimeout(() => {
+    content.innerHTML += `<p>✅ Payment successful! Your booking for <b>${name}</b> is confirmed.</p>`;
+  }, 1400);
+}
+
+function closeProcessingOverlay(){
+  const overlay = document.getElementById("processOverlay");
+  if (overlay) overlay.classList.add("hidden");
+}
+
 async function confirmPayment(){
   const modal = document.getElementById("paymentModal");
   if (modal) modal.classList.add("hidden");
   if (!currentBooking) return;
 
-  const method = document.getElementById("paymentMethod").value || "selected method";
+  const methodEl = document.getElementById("paymentMethod");
+  const method = methodEl ? methodEl.value : "selected method";
 
-  // Simulate payment delay
-  appendChat("bot", `💳 Processing your ${method} payment of ₹${currentBooking.price}...`);
-  await new Promise(r => setTimeout(r, 1200));
+  // Show center overlay for processing, not chatbot
+  showProcessingOverlay(currentBooking.price, currentBooking.transportId, method);
 
   // Log booking in backend
   try {
@@ -204,14 +228,14 @@ async function confirmPayment(){
     console.error("Error logging booking:", err);
   }
 
-  appendChat("bot", `🎟️ Payment successful! Your booking for <b>${currentBooking.transportId}</b> is confirmed.`);
+  // refresh booking history dropdown if open
+  loadBookingHistory();
+
+  // optional alert
   alert(`Payment Successful! Ticket booked for ${currentBooking.transportId}`);
 
   currentBooking = null;
-  // Refresh booking history panel if visible
-  loadBookingHistory();
 }
-
 
 // ---------------- ADMIN FUNCTIONS ----------------
 
@@ -237,14 +261,18 @@ async function addRoute(){
   });
   const data = await res.json();
   const box = document.getElementById("addRouteResult");
-  box.innerText = data.status === "ok" ? "Route added successfully." : ("Error: " + data.error);
+  if (box) {
+    box.innerText = data.status === "ok" ? "Route added successfully." : ("Error: " + data.error);
+  }
 }
 
 async function loadHistory(){
   const res = await fetch("/admin/history");
   const data = await res.json();
   const box = document.getElementById("historyResult");
-  box.innerText = JSON.stringify(data.history, null, 2);
+  if (box) {
+    box.innerText = JSON.stringify(data.history, null, 2);
+  }
 }
 
 let modeChart = null;
@@ -279,6 +307,8 @@ function appendChat(sender, text) {
   if (!chatWindow) {
     chatWindow = document.getElementById("chatWindow");
   }
+  if (!chatWindow) return;
+
   const msg = document.createElement("div");
   msg.className = `chat-msg ${sender}`;
   msg.innerHTML = text.replace(/\n/g, "<br>");
@@ -295,7 +325,7 @@ async function sendMessage(){
   input.value = "";
 
   const typing = document.getElementById("typingIndicator");
-  typing.classList.remove("hidden");
+  if (typing) typing.classList.remove("hidden");
 
   try {
     const res = await fetch("/chat", {
@@ -305,12 +335,12 @@ async function sendMessage(){
     });
 
     const data = await res.json();
-    typing.classList.add("hidden");
+    if (typing) typing.classList.add("hidden");
 
     appendChat("bot", data.reply);
 
   } catch (err) {
-    typing.classList.add("hidden");
+    if (typing) typing.classList.add("hidden");
     appendChat("bot", "⚠️ Connection issue — please try again.");
   }
 }
@@ -410,8 +440,21 @@ window.addEventListener("load", () => {
   }
 });
 
+// ---------------- BOOKING HISTORY DROPDOWN ----------------
+
+function toggleHistoryPanel(){
+  const panel = document.getElementById("historyPanel");
+  if (!panel) return;
+  panel.classList.toggle("hidden");
+
+  // when opening, load history from backend
+  if (!panel.classList.contains("hidden")) {
+    loadBookingHistory();
+  }
+}
+
 async function loadBookingHistory(){
-  const box = document.getElementById("bookingHistory");
+  const box = document.getElementById("historyList");
   if (!box) return;
 
   box.innerHTML = "<p>⏳ Loading your bookings...</p>";
@@ -425,18 +468,49 @@ async function loadBookingHistory(){
       return;
     }
 
-    box.innerHTML = "";
-    data.history.forEach(h => {
-      const div = document.createElement("div");
-      div.className = "result-card";
-      div.innerHTML = `
-        <p><b>${h.origin} → ${h.destination}</b> (${h.mode.toUpperCase()})</p>
-        <small>${h.timestamp}</small>
+    let html = `
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Route</th>
+            <th>Mode</th>
+            <th>Price (₹)</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    data.history.forEach((h, idx) => {
+      html += `
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${h.origin} → ${h.destination}</td>
+          <td>${h.mode.toUpperCase()}</td>
+          <td>${h.price}</td>
+          <td>${h.timestamp}</td>
+        </tr>
       `;
-      box.appendChild(div);
     });
+
+    html += "</tbody></table>";
+    box.innerHTML = html;
+
   } catch (err) {
     console.error("History error:", err);
     box.innerHTML = "<p>Could not load booking history.</p>";
   }
 }
+
+// Close dropdown if user clicks outside
+window.addEventListener("click", (event) => {
+  const panel = document.getElementById("historyPanel");
+  const button = document.querySelector(".history-btn");
+
+  if (!panel.classList.contains("hidden")) {
+    if (!panel.contains(event.target) && !button.contains(event.target)) {
+      panel.classList.add("hidden");
+    }
+  }
+});
