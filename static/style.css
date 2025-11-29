@@ -280,3 +280,229 @@ h1::before {
   top: 10px;
   right: 12px;
 }
+/* -----------------------------------------------------------
+   ✨ Enhanced Traveler + Payment Modal UI
+-----------------------------------------------------------*/
+
+.traveler-modal,
+.payment-card {
+  width: 380px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(18px);
+  padding: 26px;
+  border-radius: 16px;
+  box-shadow: 0px 12px 32px rgba(0,0,0,0.22);
+  animation: fadeInScale 0.25s ease-out;
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #003f5c;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.modal-label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+  color: #003f5c;
+  font-size: 14px;
+}
+
+.modal-field {
+  margin-bottom: 18px;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid #ccd4e0;
+  border-radius: 12px;
+  font-size: 14px;
+  transition: 0.25s;
+}
+
+.modal-input:focus {
+  border-color: #008cff;
+  box-shadow: 0px 0px 10px rgba(0,140,255,0.35);
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.btn-cancel {
+  background: #d0d7e2;
+  border: none;
+  padding: 11px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+  width: 48%;
+  transition: 0.2s;
+}
+
+.btn-cancel:hover {
+  background: #bec7d4;
+}
+
+.btn-continue {
+  background: linear-gradient(135deg, #0094ff, #0062ff);
+  border: none;
+  color: white;
+  padding: 11px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  width: 48%;
+  transition: 0.2s;
+}
+
+.btn-continue:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg,#005fea,#003f99);
+}
+
+.payment-summary {
+  background: #f1f7ff;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  color: #003966;
+  border-left: 4px solid #008cff;
+  font-size: 14px;
+}
+
+/* Smooth pop-in animation */
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+/* Glass Blur Modal */
+.glass-modal {
+  width: 380px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+  padding: 26px;
+  border-radius: 18px;
+  box-shadow: 0px 14px 32px rgba(0, 0, 0, 0.2);
+  animation: fadeInScale 0.25s ease-out;
+}
+
+.modal-title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #003f5c;
+}
+
+.modal-label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ccd5e0;
+  outline: none;
+  transition: 0.2s;
+}
+
+.modal-input:focus {
+  border-color: #0094ff;
+  box-shadow: 0px 0px 10px rgba(0,140,255,0.35);
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.btn-cancel {
+  width: 50%;
+  background: #d0d7e2;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-cancel:hover {
+  background: #c2c8d4;
+}
+
+.btn-continue {
+  width: 50%;
+  background: linear-gradient(135deg, #0094ff, #005fec);
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-continue:hover {
+  transform: scale(1.03);
+}
+
+/* Payment Summary */
+.payment-summary {
+  background: #eef6ff;
+  padding: 12px;
+  border-radius: 12px;
+  border-left: 4px solid #008cff;
+  margin-bottom: 14px;
+}
+
+/* Processing Loader */
+.loader {
+  border: 4px solid #d0d0d0;
+  border-top: 4px solid #008cff;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  margin: 15px auto;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* Success Modal */
+.success-box {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.success-icon {
+  width: 70px;
+  height: 70px;
+  background: #22c55e;
+  color: white;
+  font-size: 35px;
+  border-radius: 50%;
+  margin: 0 auto 15px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}

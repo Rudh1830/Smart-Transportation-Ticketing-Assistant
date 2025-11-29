@@ -95,58 +95,77 @@
 
   <!-- Traveler Details Modal -->
 <div id="travelerDetailsModal" class="overlay hidden">
-  <div class="overlay-content">
-    <h3>Traveler Details</h3>
+  <div class="glass-modal">
+    <h2 class="modal-title">🚶 Traveler Details</h2>
 
-    <label>Full Name:</label>
-    <input id="cust_name" type="text" placeholder="Enter passenger name" required style="width:100%; margin-bottom:8px;" />
+    <div class="modal-field">
+      <label class="modal-label">Full Name</label>
+      <input id="cust_name" type="text" class="modal-input" placeholder="Enter full name">
+    </div>
 
-    <label>Email:</label>
-    <input id="cust_email" type="email" placeholder="example@email.com" required style="width:100%; margin-bottom:8px;" />
+    <div class="modal-field">
+      <label class="modal-label">Email</label>
+      <input id="cust_email" type="email" class="modal-input" placeholder="example@gmail.com">
+    </div>
 
-    <label>Mobile Number:</label>
-    <input id="cust_phone" type="text" placeholder="+91 XXXXX XXXXX" required style="width:100%; margin-bottom:8px;" />
+    <div class="modal-field">
+      <label class="modal-label">Mobile Number</label>
+      <input id="cust_phone" type="text" class="modal-input" placeholder="9876543210">
+    </div>
 
-    <label>Number of Travelers:</label>
-    <input id="cust_count" type="number" value="1" min="1" style="width:100%; margin-bottom:8px;" />
+    <div class="modal-field">
+      <label class="modal-label">Number of Travelers</label>
+      <input id="cust_count" type="number" class="modal-input" value="1">
+    </div>
 
-    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
-      <button onclick="closeTravelerModal()">Cancel</button>
-      <button onclick="confirmTravelerDetails()">Continue</button>
+    <div class="modal-buttons">
+      <button onclick="closeTravelerModal()" class="btn-cancel">Cancel</button>
+      <button onclick="confirmTravelerDetails()" class="btn-continue">Continue</button>
     </div>
   </div>
 </div>
 
-  <!-- Payment method modal -->
-  <div id="paymentModal" class="overlay hidden">
-    <div class="overlay-content">
-      <h3>Confirm Payment</h3>
-      <p id="paymentSummary"></p>
-      <label>
-        Payment Method:
-        <select id="paymentMethod">
-          <option value="UPI">UPI</option>
-          <option value="Debit Card">Debit Card</option>
-          <option value="Credit Card">Credit Card</option>
-          <option value="Net Banking">Net Banking</option>
-        </select>
-      </label>
-      <div style="margin-top:10px; display:flex; gap:8px; justify-content:flex-end;">
-        <button class="close-btn" onclick="closePaymentModal()">Cancel</button>
-        <button class="close-btn" onclick="confirmPayment()">Pay</button>
-      </div>
+<!-- Payment Modal -->
+<div id="paymentModal" class="overlay hidden">
+  <div class="glass-modal">
+    <h2 class="modal-title">💳 Payment</h2>
+
+    <p id="paymentSummary" class="payment-summary"></p>
+
+    <label class="modal-label">Choose Payment Method</label>
+    <select id="paymentMethod" class="modal-input">
+      <option value="UPI">UPI</option>
+      <option value="Debit Card">Debit Card</option>
+      <option value="Credit Card">Credit Card</option>
+      <option value="Net Banking">Net Banking</option>
+    </select>
+
+    <div class="modal-buttons">
+      <button onclick="closePaymentModal()" class="btn-cancel">Cancel</button>
+      <button onclick="confirmPayment()" class="btn-continue">Pay</button>
     </div>
   </div>
+</div>
 
-  <!-- Center overlay for processing steps -->
-  <div id="processOverlay" class="overlay hidden">
-    <div class="overlay-content">
-      <h3>Booking in progress...</h3>
-      <div id="processContent"></div>
-      <button class="close-btn" onclick="closeProcessingOverlay()">Close</button>
-    </div>
+<!-- Processing Animation Modal -->
+<div id="processOverlay" class="overlay hidden">
+  <div class="glass-modal processing-box">
+    <h3>Booking in progress...</h3>
+    <div class="loader"></div>
+    <div id="processContent"></div>
+    <button onclick="closeProcessingOverlay()" class="btn-continue" style="margin-top:15px;">Close</button>
   </div>
+</div>
 
+<!-- Success Modal -->
+<div id="successModal" class="overlay hidden">
+  <div class="glass-modal success-box">
+    <div class="success-icon">✔</div>
+    <h2>Payment Successful!</h2>
+    <p>Your ticket has been booked.</p>
+    <button onclick="closeSuccessModal()" class="btn-continue" style="margin-top:15px;">OK</button>
+  </div>
+</div>
   <script src="/static/script.js"></script>
 </body>
 </html>
