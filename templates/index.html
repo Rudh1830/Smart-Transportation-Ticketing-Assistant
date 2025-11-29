@@ -94,37 +94,77 @@
   </div>
 
   <!-- Traveler Details Modal -->
+<!-- Traveler Details Modal -->
 <div id="travelerDetailsModal" class="overlay hidden">
-  <div class="glass-modal">
+  <div class="glass-modal traveler-modal">
     <h2 class="modal-title">🚶 Traveler Details</h2>
 
+    <!-- Full Name -->
     <div class="modal-field">
       <label class="modal-label">Full Name</label>
       <input id="cust_name" type="text" class="modal-input" placeholder="Enter full name">
     </div>
 
+    <!-- Gender Dropdown -->
+    <div class="modal-field">
+      <label class="modal-label">Gender</label>
+      <select id="cust_gender" class="modal-input">
+        <option value="">Select gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+        <option value="prefer_not">Prefer not to say</option>
+      </select>
+    </div>
+
+    <!-- Email -->
     <div class="modal-field">
       <label class="modal-label">Email</label>
       <input id="cust_email" type="email" class="modal-input" placeholder="example@gmail.com">
     </div>
 
+    <!-- Phone with Country Flag Selector -->
     <div class="modal-field">
       <label class="modal-label">Mobile Number</label>
-      <input id="cust_phone" type="text" class="modal-input" placeholder="9876543210">
+
+      <div class="phone-row">
+        <!-- Country code button -->
+        <button type="button" id="countryCodeBtn" class="country-code-btn">
+          <span class="flag">🇮🇳</span>
+          <span id="countryCodeLabel">+91</span>
+        </button>
+
+        <!-- Actual phone input used by your JS -->
+        <input
+          id="cust_phone"
+          type="tel"
+          class="modal-input phone-input"
+          placeholder="9876543210"
+        >
+      </div>
+
+      <!-- Dropdown with a few sample countries -->
+      <div id="countryCodeDropdown" class="country-code-dropdown hidden">
+        <div class="country-item" data-code="+91" data-flag="🇮🇳">🇮🇳 +91 India</div>
+        <div class="country-item" data-code="+1" data-flag="🇺🇸">🇺🇸 +1 United States</div>
+        <div class="country-item" data-code="+44" data-flag="🇬🇧">🇬🇧 +44 United Kingdom</div>
+        <div class="country-item" data-code="+61" data-flag="🇦🇺">🇦🇺 +61 Australia</div>
+      </div>
     </div>
 
+    <!-- Number of Travellers -->
     <div class="modal-field">
       <label class="modal-label">Number of Travelers</label>
-      <input id="cust_count" type="number" class="modal-input" value="1">
+      <input id="cust_count" type="number" value="1" min="1" class="modal-input">
     </div>
 
+    <!-- Buttons -->
     <div class="modal-buttons">
       <button onclick="closeTravelerModal()" class="btn-cancel">Cancel</button>
       <button onclick="confirmTravelerDetails()" class="btn-continue">Continue</button>
     </div>
   </div>
 </div>
-
 <!-- Payment Modal -->
 <div id="paymentModal" class="overlay hidden">
   <div class="glass-modal">
@@ -165,7 +205,40 @@
     <p>Your ticket has been booked.</p>
     <button onclick="closeSuccessModal()" class="btn-continue" style="margin-top:15px;">OK</button>
   </div>
+  <!-- Slide-In Ticket Receipt Panel -->
+<div id="ticketReceipt" class="ticket-slide hidden">
+
+  <div class="ticket-header">
+    <h2>🎟️ Your Ticket Receipt</h2>
+    <button onclick="closeTicketReceipt()" class="close-ticket">×</button>
+  <button onclick="downloadTicketPDF()" class="btn-continue" style="margin-top:15px;">
+  ⬇ Download Ticket (PDF)
+</button>
+
+  </div>
+
+  <div class="ticket-body">
+    <p><b>Passenger:</b> <span id="r_passenger"></span></p>
+    <p><b>Email:</b> <span id="r_email"></span></p>
+    <p><b>Mobile:</b> <span id="r_phone"></span></p>
+
+    <p><b>Route:</b> <span id="r_route"></span></p>
+    <p><b>Transport ID:</b> <span id="r_tid"></span></p>
+    <p><b>Mode:</b> <span id="r_mode"></span></p>
+
+    <p><b>Travelers:</b> <span id="r_travelers"></span></p>
+    <p><b>Total Paid:</b> ₹<span id="r_total"></span></p>
+    <p><b>Booked On:</b> <span id="r_time"></span></p>
+  </div>
+<div class="ticket-footer">
+  <p>🎉 Thank you for choosing Smart Transport!</p>
+  <button onclick="downloadTicketPDF()" class="btn-continue" style="margin-top:15px;">
+    Download Ticket (PDF)
+  </button>
+</div>
+</div>
 </div>
   <script src="/static/script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>
