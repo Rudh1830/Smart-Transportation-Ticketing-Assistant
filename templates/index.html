@@ -93,6 +93,30 @@
     </div>
   </div>
 
+  <!-- Traveler Details Modal -->
+<div id="travelerDetailsModal" class="overlay hidden">
+  <div class="overlay-content">
+    <h3>Traveler Details</h3>
+
+    <label>Full Name:</label>
+    <input id="cust_name" type="text" placeholder="Enter passenger name" required style="width:100%; margin-bottom:8px;" />
+
+    <label>Email:</label>
+    <input id="cust_email" type="email" placeholder="example@email.com" required style="width:100%; margin-bottom:8px;" />
+
+    <label>Mobile Number:</label>
+    <input id="cust_phone" type="text" placeholder="+91 XXXXX XXXXX" required style="width:100%; margin-bottom:8px;" />
+
+    <label>Number of Travelers:</label>
+    <input id="cust_count" type="number" value="1" min="1" style="width:100%; margin-bottom:8px;" />
+
+    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+      <button onclick="closeTravelerModal()">Cancel</button>
+      <button onclick="confirmTravelerDetails()">Continue</button>
+    </div>
+  </div>
+</div>
+
   <!-- Payment method modal -->
   <div id="paymentModal" class="overlay hidden">
     <div class="overlay-content">

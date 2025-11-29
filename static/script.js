@@ -178,23 +178,15 @@ async function compareWebsites(){
 
 // ---------------- BOOKING / PAYMENT ----------------
 
-let currentBooking = null;  // booking context for payment + overlay
+let currentBooking = null;
 
 function fakeBook(site, transportId, price){
-  // used both from search results and website comparison
   currentBooking = { site, transportId, price };
 
-  const modal = document.getElementById("paymentModal");
-  const summary = document.getElementById("paymentSummary");
-
-  if (summary) {
-    summary.innerHTML =
-      `Booking <b>${transportId}</b> via <b>${site}</b> for <b>₹${price}</b>.`;
-  }
-  if (modal) {
-    modal.classList.remove("hidden");
-  }
+  // Open traveler details modal FIRST
+  document.getElementById("travelerDetailsModal").classList.remove("hidden");
 }
+
 
 function closePaymentModal(){
   const modal = document.getElementById("paymentModal");
@@ -202,6 +194,44 @@ function closePaymentModal(){
     modal.classList.add("hidden");
   }
 }
+function closeTravelerModal(){
+  document.getElementById("travelerDetailsModal").classList.add("hidden");
+}
+
+function confirmTravelerDetails(){
+  const name = document.getElementById("cust_name").value.trim();
+  const email = document.getElementById("cust_email").value.trim();
+  const phone = document.getElementById("cust_phone").value.trim();
+  const count = Number(document.getElementById("cust_count").value);
+
+  if(!name || !email || !phone || count < 1){
+    alert("Please fill all traveler details.");
+    return;
+  }
+
+  currentBooking.name = name;
+  currentBooking.email = email;
+  currentBooking.phone = phone;
+  currentBooking.count = count;
+
+  // Close traveler modal
+  closeTravelerModal();
+
+  // Update payment modal summary with passenger count pricing
+  const modal = document.getElementById("paymentModal");
+  const summary = document.getElementById("paymentSummary");
+
+  const totalPrice = (currentBooking.price * currentBooking.count).toFixed(2);
+
+  summary.innerHTML = 
+    `Booking for <b>${currentBooking.name}</b><br>
+     Travelers: <b>${currentBooking.count}</b><br>
+     Contact: ${currentBooking.email}<br><br>
+     Total Amount: <b>₹${totalPrice}</b>`;
+
+  modal.classList.remove("hidden");
+}
+
 
 // center overlay for processing steps (instead of chatbot)
 function showProcessingOverlay(price, name, method){
@@ -236,8 +266,8 @@ async function confirmPayment(){
   const methodEl = document.getElementById("paymentMethod");
   const method = methodEl ? methodEl.value : "selected method";
 
-  // Show center overlay for processing, not chatbot
-  showProcessingOverlay(currentBooking.price, currentBooking.transportId, method);
+  const totalPrice = (currentBooking.price * currentBooking.count).toFixed(2);
+  showProcessingOverlay(totalPrice, currentBooking.transportId, method);
 
   // Log booking in backend
   try {
