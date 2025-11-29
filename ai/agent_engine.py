@@ -2,6 +2,9 @@
 
 from ai.recommender import recommend_transport_options
 from ai.rag_engine import retrieve_context
+from rapidfuzz import fuzz, process
+import random
+import re
 
 # Simple in-memory context (resets when server restarts)
 USER_MEMORY = {
@@ -26,148 +29,152 @@ def _format_option(opt: dict) -> str:
 
 def respond_intelligently(message: str, routes: list[dict], kb_dir) -> str:
     """
-    Professional interactive chatbot logic.
-    - Understands greetings, cheapest, from X to Y, safety, book confirmations.
-    - Uses your existing recommender + RAG.
-    - Returns a markdown-like text that frontend renders nicely.
+    FINAL Natural Language Conversational Travel Assistant Engine.
+    Handles:
+    - Fuzzy city matching
+    - Unstructured travel queries
+    - Best mode detection (fastest/cheapest/preferred)
+    - Website booking guidance
+    - Seasonal rush planning
+    - General travel preparation
     """
-    if not message:
-        return "I didn't receive any message. Could you please type your query again?"
 
-    text = message.strip()
-    msg = text.lower()
+    if not message or not message.strip():
+        return "🙂 I didn't receive anything. Try asking *'Best way from Delhi to Agra?'*"
 
-    USER_MEMORY["last_query"] = text
+    msg = message.lower().strip()
+    USER_MEMORY["last_query"] = message
 
-    # 1) Greetings
-    if any(word in msg for word in ["hi", "hello", "hey", "good morning", "good evening"]):
-        if USER_MEMORY.get("name"):
-            return f"👋 Hello {USER_MEMORY['name']}! How can I assist with your travel today?"
-        return (
-            "👋 Hello! I'm your Smart Travel Assistant.\n\n"
-            "I can help you with:\n"
-            "- Finding routes (train / bus / flight / taxi / bike)\n"
-            "- Choosing the cheapest or fastest option\n"
-            "- Explaining safety & baggage rules\n"
-            "- Simulating ticket booking\n\n"
-            "Try asking: *Best train from Delhi to Agra*"
-        )
+    # ----------------------------------------
+    # 1️⃣ Greeting / Identity Handling
+    # ----------------------------------------
+    greetings = ["hi", "hello", "hey", "namaste", "good morning", "good evening"]
 
-    # 2) Capture user's name: "my name is ..."
+    if any(g in msg for g in greetings):
+        return random.choice([
+            "👋 Hey! Where are you planning to travel?",
+            "Hello 😊 tell me your travel route and I’ll guide you!",
+            "Hi! You can ask: *best train from Delhi to Jaipur*"
+        ])
+
     if "my name is" in msg:
-        name_part = text.split("my name is", 1)[-1].strip()
-        if name_part:
-            name = name_part.split()[0].title()
-            USER_MEMORY["name"] = name
-            return f"Nice to meet you, {name} 🙂. How can I help you with your travel today?"
-        else:
-            return "Nice to meet you 🙂. How can I help you with your travel today?"
+        name = msg.split("my name is")[-1].strip().split(" ")[0].title()
+        USER_MEMORY["name"] = name
+        return f"Nice to meet you, {name}! Tell me your travel query 😊."
 
-    # 3) Ask bot's name
     if "your name" in msg:
-        return "You can call me **TRAViA**, your smart travel assistant 🤝."
+        return "You can call me **TRAVIAAI** 🤖 — your intelligent travel assistant."
 
-    # 4) Booking confirmation, if we already suggested something
-    if USER_MEMORY.get("last_best_option") and any(
-        x in msg for x in ["yes", "book", "confirm", "go ahead", "ok", "okay", "sure"]
-    ):
-        best = USER_MEMORY["last_best_option"]
+    # ----------------------------------------
+    # 2️⃣ Extract Cities Using Fuzzy Matching
+    # ----------------------------------------
+    cities = list({r['origin'] for r in routes} | {r['destination'] for r in routes})
+    extracted = process.extract(msg, cities, limit=5, scorer=fuzz.partial_ratio)
+    extracted = [c for c in extracted if c[1] > 60]
+
+    origin = extracted[0][0] if len(extracted) > 0 else None
+    destination = extracted[1][0] if len(extracted) > 1 else None
+
+    # ----------------------------------------
+    # 3️⃣ Seasonal Rush / Holiday Travel Guidance
+    # ----------------------------------------
+    rush_keywords = ["holiday", "crowd", "festival", "rush", "peak", "long weekend"]
+    if any(word in msg for word in rush_keywords):
         return (
-            f"🎟️ Booking simulated — your ticket for **{best['name']} ({best['mode'].upper()})** "
-            f"from **{best['origin']}** to **{best['destination']}** is confirmed!\n\n"
-            "If you want, I can now suggest a return trip or alternative options."
+            "📌 **Peak Travel Advisory**:\n"
+            "Travel tends to be crowded during:\n"
+            "- 🚂 Long weekends\n"
+            "- 🎉 National holidays (Diwali, Christmas, Onam, Eid, Pongal)\n"
+            "- 💼 Summer vacations\n\n"
+            "**Smart Tips:**\n"
+            "✔ Book 20–45 days early\n"
+            "✔ Avoid Friday evenings\n"
+            "✔ Compare prices on MakeMyTrip, IRCTC, Redbus, IXIGO\n"
+            "✔ Keep digital documents & buffer time\n\n"
+            "Want me to search best options for your route now?"
         )
 
-    # 5) Specific route: "from X to Y"
-    if "from" in msg and "to" in msg:
-        try:
-            # Very simple parsing: "... from ORIGIN to DEST ..."
-            after_from = msg.split("from", 1)[1]
-            origin_part, dest_part = after_from.split("to", 1)
-            origin = origin_part.strip()
-            dest = dest_part.strip()
+    # ----------------------------------------
+    # 4️⃣ Website Recommendation Intent
+    # ----------------------------------------
+    if any(x in msg for x in ["where to book", "website", "app", "online booking"]):
+        return (
+            "🛒 **Best Platforms to Book:**\n"
+            "- 🚆 Train → **IRCTC, IXIGO, MakeMyTrip**\n"
+            "- 🚌 Bus → **RedBus, AbhiBus, Goibibo**\n"
+            "- ✈️ Flights → **Cleartrip, IXIGO, MakeMyTrip**\n"
+            "- 🚕 Cab → **Uber, Ola, Rapido**\n\n"
+            "Tell me your route and I'll compare estimated prices."
+        )
 
-            if not origin or not dest:
-                raise ValueError("empty origin/destination")
+    # ----------------------------------------
+    # 5️⃣ Planning / Packing Help
+    # ----------------------------------------
+    if any(word in msg for word in ["prepare", "packing", "checklist", "travel tips"]):
+        return (
+            "🧳 **Travel Preparation Guide:**\n"
+            "• Keep ID, tickets, hotel booking copies\n"
+            "• Carry powerbank, water, medicines\n"
+            "• Reach station/airport early (Train: 30 min / Flight: 2 hrs)\n"
+            "• Download offline maps\n"
+            "• Share live location during solo travel\n\n"
+            "Want safety rules or booking suggestions?"
+        )
 
-            matches = [
-                r
-                for r in routes
-                if origin in r.get("origin", "").lower()
-                and dest in r.get("destination", "").lower()
-            ]
+    # ----------------------------------------
+    # 6️⃣ If Route Identified → Recommend Best Option
+    # ----------------------------------------
+    if origin and destination:
+        matches = [
+            r for r in routes
+            if fuzz.partial_ratio(r['origin'], origin) > 65
+            and fuzz.partial_ratio(r['destination'], destination) > 65
+        ]
 
-            if not matches:
-                return (
-                    f"❌ I couldn't find any routes for **{origin} → {dest}** in the current dataset.\n\n"
-                    "You can try:\n"
-                    "- Checking spelling of city names\n"
-                    "- Using a nearby major city\n"
-                    "- Changing the transport mode (train / bus / flight / taxi / bike)"
-                )
+        if not matches:
+            return f"❌ I found **{origin} → {destination}**, but no exact transport. Try nearby cities?"
 
-            # Priority: cheapest if user says cheap/lowest/budget; else time if fast; else price.
-            if any(w in msg for w in ["cheap", "cheapest", "low", "budget"]):
-                priority = "price"
-            elif any(w in msg for w in ["fast", "quick", "shortest", "quickest"]):
-                priority = "time"
-            else:
-                priority = "price"
+        # Decide user intent: cheap vs fast vs comfort
+        priority = "price"
+        if "fast" in msg or "quick" in msg: priority = "time"
+        elif "comfortable" in msg or "luxury" in msg: priority = "comfort"
 
-            recs = recommend_transport_options(matches, priority=priority)
-            if not recs:
-                return "I found some routes, but couldn't rank them properly. Please try again."
-
-            best = recs[0]
-            USER_MEMORY["last_best_option"] = best
-            return _format_option(best)
-
-        except Exception:
-            # Fall through to generic logic
-            pass
-
-    # 6) User asks for cheapest option in general
-    if any(w in msg for w in ["cheapest", "lowest price", "low budget"]):
-        if not routes:
-            return "I don't have any route data loaded right now. Please try searching again."
-        sorted_routes = sorted(routes, key=lambda r: r.get("price", 1e9))
-        best = sorted_routes[0]
+        recs = recommend_transport_options(matches, priority)
+        best = recs[0]
         USER_MEMORY["last_best_option"] = best
+
         return (
-            "💸 **Overall cheapest option in the system**\n\n"
-            + _format_option(best)
+            f"📍 Found a match for **{origin} → {destination}**\n"
+            f"🔍 Filter applied: **{'Cheapest' if priority=='price' else 'Fastest'} travel option**\n\n"
+            f"🚗 **Best Mode: {best['mode'].upper()}**\n"
+            f"🏁 Route: {best['origin']} → {best['destination']}\n"
+            f"💰 Fare: ₹{best['price']}\n"
+            f"⭐ Rating: {best['rating']}/5\n"
+            f"🕒 Travel Time: {best['duration_mins']} mins\n\n"
+            "Would you like:\n"
+            "👉 price comparison websites?\n"
+            "👉 alternative routes?\n"
+            "👉 safety / baggage rules?"
         )
 
-    # 7) Safety / baggage / rules / tips → use RAG from your knowledge_base
-    if any(w in msg for w in ["safety", "safe", "baggage", "luggage", "rules", "tips", "guidelines"]):
-        ctx = retrieve_context(text, kb_dir)
+    # ----------------------------------------
+    # 7️⃣ Knowledge Base Queries (Safety, Baggage)
+    # ----------------------------------------
+    if any(word in msg for word in ["safety", "baggage", "rules", "luggage"]):
+        ctx = retrieve_context(message, kb_dir)
         if ctx:
             top = ctx[0]
-            return (
-                f"📘 **{top['title'].replace('_', ' ').title()}**\n\n"
-                f"{top['snippet']}\n\n"
-                "If you share your route (for example: *train from Mumbai to Delhi*), "
-                "I can also suggest the best option for that journey."
-            )
-        else:
-            return (
-                "I couldn't find specific rules in the knowledge base, but in general:\n"
-                "- Keep valuables with you\n"
-                "- Avoid sharing personal details with strangers\n"
-                "- Double-check vehicle details before boarding"
-            )
+            return f"📘 **{top['title'].replace('_', ' ').title()}**\n\n{top['snippet']}..."
 
-    # 8) Thank you
-    if "thank" in msg:
-        return "You're welcome 😊. If you need help with more routes or bookings, just ask!"
-
-    # 9) Generic fallback help
+    # ----------------------------------------
+    # 8️⃣ Generic fallback
+    # ----------------------------------------
     return (
-        "🤖 I’m here to help with your travel.\n\n"
-        "You can ask me things like:\n"
-        "- *Best train from Delhi to Agra*\n"
-        "- *Cheapest flight from Mumbai to Goa*\n"
-        "- *Is night train travel safe?*\n"
-        "- *Baggage rules for flights*\n\n"
-        "Just describe your trip in natural language, and I’ll do my best to answer."
+        "🤖 I can help with:\n"
+        "• Best routes & modes (train/bus/flight/cab)\n"
+        "• Cheapest/fastest travel\n"
+        "• Festival rush guidance\n"
+        "• Safety & baggage rules\n"
+        "• Website booking suggestions\n\n"
+        "Try typing: *cheapest delhi to agra* or *best flight mumbai to goa* ✈️"
     )

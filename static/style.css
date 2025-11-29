@@ -1,241 +1,38 @@
+/* -----------------------------------------------------------
+ 🌍 Global Styling & Theme
+-----------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
 body {
-  font-family: Arial, sans-serif;
-  background: #f5f7fa;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #b0e3ff, #ffffff, #ffe4b8);
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
+/* subtle world map watermark */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url('https://i.ibb.co/F0sQRCL/world-map-png.png') no-repeat center;
+  background-size: 65%;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* -----------------------------------------------------------
+ 📦 Layout Containers
+-----------------------------------------------------------*/
 .container {
   max-width: 1000px;
   margin: 20px auto;
   padding: 10px;
 }
 
-h1 {
-  text-align: center;
-}
-
-.card {
-  background: #ffffff;
-  border-radius: 8px;
-  padding: 12px 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.row input,
-.row select,
-.row button {
-  padding: 6px 8px;
-  font-size: 14px;
-}
-
-.row input,
-.row select {
-  border-radius: 4px;
-  border: 1px solid #d0d4d9;
-}
-
-.row button {
-  border-radius: 4px;
-  border: none;
-  background: #2563eb;
-  color: #fff;
-  cursor: pointer;
-}
-
-.row button:hover {
-  background: #1d4ed8;
-}
-
-.output {
-  background: #0f172a;
-  color: #e5e7eb;
-  padding: 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  max-height: 260px;
-  overflow: auto;
-}
-
-footer {
-  text-align: center;
-  margin-top: 20px;
-  color: #6b7280;
-  font-size: 12px;
-}
-
-/* Website comparison styles */
-.compare-card {
-  background: #ffffff;
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #e3e5e8;
-}
-
-.compare-header {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-bottom: 6px;
-}
-
-.compare-header strong {
-  font-size: 15px;
-}
-
-.offers-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 6px;
-}
-
-.offers-table th,
-.offers-table td {
-  border: 1px solid #d0d4d9;
-  padding: 4px 6px;
-  font-size: 13px;
-}
-
-.offers-table th {
-  text-align: left;
-  background: #f3f5f7;
-}
-
-.hint {
-  font-size: 13px;
-  color: #555;
-}
-
-.cards-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.result-card {
-  background: #ffffff;
-  border-radius: 8px;
-  padding: 10px 12px;
-  border: 1px solid #e3e5e8;
-}
-
-.result-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.result-title h3 {
-  margin: 0;
-  font-size: 15px;
-}
-
-.mode-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: #e5f0ff;
-  color: #1d4ed8;
-  font-size: 11px;
-  text-transform: uppercase;
-}
-
-.route-line {
-  margin: 4px 0;
-  font-size: 13px;
-  color: #374151;
-}
-
-.time-line,
-.meta-line {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 12px;
-  margin: 2px 0;
-}
-
-.best-header {
-  font-size: 13px;
-  font-weight: bold;
-  color: #15803d;
-  margin-bottom: 4px;
-}
-
-.best-main {
-  border-left: 4px solid #22c55e;
-  padding-left: 8px;
-}
-
-.rag-container .result-card h3 {
-  margin-bottom: 6px;
-  font-size: 14px;
-}
-
-/* --- Two-column layout --- */
-.main-layout {
-  display: flex;
-  gap: 20px;
-}
-
-.left-panel {
-  flex: 2;
-}
-
-.right-panel {
-  flex: 1.2;
-  height: 600px;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Chat Window */
-.chat-window {
-  flex: 1;
-  border: 1px solid #ddd;
-  padding: 10px;
-  overflow-y: auto;
-  background: #fafafa;
-  border-radius: 8px;
-  margin-bottom: 12px;
-}
-
-.chat-msg {
-  margin: 6px 0;
-  padding: 10px;
-  border-radius: 12px;
-  max-width: 75%;
-}
-
-.chat-msg.user {
-  background: #d7edff;
-  margin-left: auto;
-}
-
-.chat-msg.bot {
-  background: #e5ffe1;
-}
-
-/* Chat Input */
-.chat-input {
-  display: flex;
-  gap: 10px;
-}
-.chat-input input {
-  flex: 1;
-  padding: 8px;
-}
-
-/* 2-Column Smart UI Layout */
 .layout {
   display: flex;
   gap: 20px;
@@ -250,42 +47,149 @@ footer {
   gap: 20px;
 }
 
-/* Two sections take equal vertical space */
-.full-section {
-  flex: 1;
-  overflow-y: auto;
-}
-
 .right-column {
-  flex: 1;
+  flex: 1.2;
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
-/* Chat styling */
-.chat-window {
-  flex: 1;
-  overflow-y: auto;
-  border: 1px solid #ddd;
+/* -----------------------------------------------------------
+ 🧭 Titles
+-----------------------------------------------------------*/
+h1 {
+  text-align: center;
+  font-weight: 600;
+  font-size: 28px;
+  color: #003e5c;
+  margin-bottom: 10px;
+}
+
+h1::before {
+  content: "✈️ ";
+}
+
+/* -----------------------------------------------------------
+ 🪟 Cards / Panels
+-----------------------------------------------------------*/
+.card {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: 0px 6px 20px rgba(0,0,0,0.08);
+  transition: 0.28s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* -----------------------------------------------------------
+ ✏ Inputs / Dropdowns
+-----------------------------------------------------------*/
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.row input,
+.row select {
   padding: 10px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #cfd6e2;
+  transition: 0.2s;
+}
+
+.row input:focus,
+.row select:focus {
+  border-color: #008cff;
+  box-shadow: 0px 0px 8px rgba(0,140,255,0.4);
+}
+
+/* -----------------------------------------------------------
+ 🚀 Buttons
+-----------------------------------------------------------*/
+.row button,
+.chat-input button,
+.close-btn,
+.history-btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#0094ff,#0062ff);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.25s;
+  font-weight: 500;
+}
+
+.row button:hover,
+.chat-input button:hover,
+.history-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg,#005fea,#003f99);
+}
+
+/* -----------------------------------------------------------
+ 📋 Result Cards
+-----------------------------------------------------------*/
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.result-card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 14px;
+  border-left: 5px solid #0099ff;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
+}
+
+.best-choice {
+  border-left-color: #22c55e;
+  background: #ecfff1;
+}
+
+/* -----------------------------------------------------------
+ 💬 Chat UI
+-----------------------------------------------------------*/
+.chat-window {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  padding: 14px;
+  height: 69vh;
+  overflow-y: auto;
+  border: 1px solid rgba(255,255,255,0.4);
+  scroll-behavior: smooth;
 }
 
 .chat-msg {
-  padding: 10px;
+  max-width: 78%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  font-size: 14px;
   margin: 8px 0;
-  max-width: 80%;
-  border-radius: 10px;
+  animation: fadeIn .2s ease;
 }
 
 .chat-msg.user {
-  background: #d8ebff;
   margin-left: auto;
+  background: #dff1ff;
+  border-bottom-right-radius: 6px;
 }
 
 .chat-msg.bot {
-  background: #e9ffe6;
-  border-left: 4px solid green;
+  margin-right: auto;
+  background: #eaffea;
+  border-left: 4px solid #25c06d;
+  border-bottom-left-radius: 6px;
 }
 
 .chat-input {
@@ -296,192 +200,43 @@ footer {
 
 .chat-input input {
   flex: 1;
-}
-/* Chat Improvements */
-
-.chat-window {
-  padding: 12px;
-  overflow-y: auto;
-  background: #ffffff;
+  padding: 10px;
   border-radius: 10px;
-  border: 1px solid #ddd;
-  scroll-behavior: smooth;
-  padding-bottom: 40px;
+  border: 1px solid #cccccc;
 }
 
-/* Chat bubbles */
-.chat-msg {
-  margin: 10px 0;
-  padding: 12px 16px;
-  max-width: 80%;
-  line-height: 1.4;
-  border-radius: 16px;
-  font-size: 14px;
-  animation: fadeIn 0.2s ease;
-}
-
-.chat-msg.user {
-  background: #d7e9ff;
-  margin-left: auto;
-  border-bottom-right-radius: 4px;
-}
-
-.chat-msg.bot {
-  background: #e6ffe6;
-  border-left: 4px solid #00b359;
-  border-bottom-left-radius: 4px;
-}
-
-
-/* Typing Animation */
-.typing {
-  display: flex;
-  gap: 6px;
-  margin: 8px 0;
-}
-
-.hidden {
-  display: none !important;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  background: #888;
-  border-radius: 50%;
-  animation: blink 1.4s infinite ease-in-out both;
-}
-
-.dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.dot:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-/* Glow effect on send */
-.chat-input button:hover {
-  transform: scale(1.05);
-  transition: 0.2s;
-  background-color: #1266f1;
-  color: white;
-}
-
-@keyframes blink {
-  0% { opacity: .2; }
-  20% { opacity: 1; }
-  100% { opacity: .2; }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-/* Chat window styling */
-.chat-window {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 10px 12px;
-  background: #ffffff;
-  height: 70vh;
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-/* Chat message bubbles */
-.chat-msg {
-  margin: 8px 0;
-  padding: 10px 14px;
-  border-radius: 16px;
-  max-width: 80%;
-  font-size: 14px;
-  line-height: 1.4;
-  animation: fadeIn 0.2s ease-in-out;
-}
-
-.chat-msg.user {
-  margin-left: auto;
-  background: #d7e9ff;
-  border-bottom-right-radius: 4px;
-}
-
-.chat-msg.bot {
-  margin-right: auto;
-  background: #e6ffe6;
-  border-left: 4px solid #00b359;
-  border-bottom-left-radius: 4px;
-}
-
-/* Typing indicator */
+/* Typing animation */
 .typing {
   display: flex;
   gap: 5px;
   align-items: center;
-  margin: 8px 0;
+  margin: 6px 0;
 }
 
 .typing .dot {
   width: 8px;
   height: 8px;
-  background: #999;
+  background: #444;
   border-radius: 50%;
   animation: typingBlink 1.4s infinite ease-in-out;
 }
 
-.typing .dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.typing .dot:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-.hidden {
-  display: none !important;
-}
-
-/* Chat input row */
-.chat-input {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.chat-input input {
-  flex: 1;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.chat-input button {
-  padding: 8px 14px;
-  border-radius: 6px;
-  border: none;
-  background: #2563eb;
-  color: #fff;
-  cursor: pointer;
-}
-
-.chat-input button:hover {
-  background: #1d4ed8;
-}
-
-/* Animations */
 @keyframes typingBlink {
-  0% { opacity: 0.2; }
-  20% { opacity: 1; }
-  100% { opacity: 0.2; }
+  0% { opacity: .2; }
+  50% { opacity: 1; }
+  100% { opacity: .2; }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(3px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(3px);}
+  to { opacity: 1; transform: translateY(0);}
 }
 
-/* Payment modal */
-.payment-modal {
+/* -----------------------------------------------------------
+ 📦 Booking Modal & History Panel
+-----------------------------------------------------------*/
+.payment-modal,
+.overlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.45);
@@ -491,155 +246,37 @@ footer {
   z-index: 2000;
 }
 
-.payment-modal.hidden {
-  display: none;
-}
-
-.payment-content {
-  background: #ffffff;
-  padding: 16px 20px;
-  border-radius: 8px;
-  width: 320px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-}
-
-.payment-content h3 {
-  margin-top: 0;
-}
-
-.payment-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-/* Booking history cards reuse result-card style but can tweak */
-#bookingHistory .result-card {
-  font-size: 13px;
-  padding: 8px 10px;
-}
-#bookingHistory small {
-  color: #6b7280;
-}
-
-/* --- Booking history top bar --- */
-.top-bar {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.history-btn {
-  padding: 6px 10px;
-  font-size: 13px;
-  border-radius: 4px;
-  border: 1px solid #cbd5e1;
-  background: #f8fafc;
-  cursor: pointer;
-}
-
-.history-btn:hover {
-  background: #e2e8f0;
-}
-
-/* dropdown panel */
-.history-panel {
-  position: absolute;
-  margin-top: 34px;
-  background: #ffffff;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  padding: 10px;
-  min-width: 320px;
-  max-height: 260px;
-  overflow-y: auto;
-  z-index: 20;
-}
-
-.history-panel h3 {
-  margin: 0 0 6px;
-  font-size: 14px;
-}
-
-.history-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-}
-
-.history-table th,
-.history-table td {
-  border: 1px solid #e2e8f0;
-  padding: 4px 6px;
-}
-
-.history-table th {
-  background: #f1f5f9;
-}
-
-/* reuse .hidden for toggling */
+.payment-modal.hidden,
 .hidden {
   display: none !important;
 }
 
-/* --- Center overlay for processing --- */
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-}
-
+.payment-content,
 .overlay-content {
-  background: #ffffff;
-  padding: 18px 20px;
+  background: white;
+  border-radius: 12px;
+  padding: 18px;
+  width: 330px;
+  box-shadow: 0px 10px 25px rgba(0,0,0,0.25);
+}
+
+.history-panel {
+  background: white;
   border-radius: 10px;
-  min-width: 320px;
-  max-width: 420px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-  font-size: 14px;
+  padding: 10px;
+  box-shadow: 0px 6px 20px rgba(0,0,0,0.18);
 }
 
-.overlay-content h3 {
-  margin-top: 0;
-  margin-bottom: 8px;
-}
-
-.overlay-content p {
-  margin: 4px 0;
-}
-
-.close-btn {
-  margin-top: 10px;
-  padding: 6px 12px;
-  border-radius: 4px;
-  border: none;
-  background: #2563eb;
-  color: #fff;
-  cursor: pointer;
-}
-.close-btn:hover {
-  background: #1d4ed8;
-}
-
-.best-choice {
-  border: 2px solid #22c55e;
-  background: #ecfdf3;
-  position: relative;
-}
-
+/* -----------------------------------------------------------
+ 🏁 Best Tag
+-----------------------------------------------------------*/
 .best-label {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  background: #16a34a;
-  color: #fff;
+  background: #008c3e;
+  color: white;
   padding: 2px 8px;
-  font-size: 11px;
-  border-radius: 999px;
+  border-radius: 12px;
+  position: absolute;
+  font-size: 10px;
+  top: 10px;
+  right: 12px;
 }

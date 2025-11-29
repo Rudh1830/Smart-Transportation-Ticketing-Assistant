@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import sqlite3
 import json
+from flask_mail import Mail, Message
 
 app = Flask(__name__, static_folder="static")
 
@@ -86,6 +87,15 @@ def init_db():
 def create_app():
     global app  # <<< IMPORTANT FIX
     app.register_blueprint(transport_bp)
+    app.config.update(
+    MAIL_SERVER="smtp.gmail.com",
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USERNAME="your_email@gmail.com",
+    MAIL_PASSWORD="your_app_password"
+)
+
+    mail = Mail(app)
 
     @app.route("/")
     def home():
